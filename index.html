@@ -25,28 +25,36 @@
             position: relative;
         }
 
-        /* Фоновая анимация */
         .background-animation {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; /* чтобы не мешать кликам по странице */
             overflow: hidden;
-            z-index: -1; /* чтобы было позади контента */
+            z-index: 10; 
+            pointer-events: auto;
         }
 
         .icon-fly {
             position: absolute;
-            top: 0;
             width: 50px;
             height: 50px;
-            opacity: 0.1;
+            animation: fly linear infinite;
+            pointer-events: auto;
+        }
+
+        .logo {
+            width: 100%;
+            height: 100%;
             background: url('icon.jpg') no-repeat center center;
             background-size: contain;
-            animation: fly 10s linear infinite;
             border-radius: 50%;
+        }
+
+        .icon-content
+        {
+             opacity: 0.1;
         }
 
         /* Можно сделать несколько классов с разными задержками и позициями */
@@ -87,6 +95,20 @@
             }
         }
 
+        /* Анимация вращения при клике */
+        @keyframes coin-flip {
+            0% {
+                transform: perspective(600px) rotateY(0deg);
+            }
+            100% {
+                transform: perspective(600px) rotateY(360deg);
+            }
+        }
+
+        .flip {
+            animation: coin-flip 1s forwards;
+        }
+
         /* Layout */
         header, main, footer {
             padding: 20px;
@@ -99,10 +121,11 @@
             align-items: center;
             height: 80px;
             position: relative;
-            z-index: 1;
+            z-index: 11;
+            pointer-events: auto;
         }
 
-        header img {
+        header .icon-placeholder {
             height: 50px;
             width: 50px;
             object-fit: cover;
@@ -225,21 +248,21 @@
 <body>
 
 <div class="background-animation">
-    <div class="icon-fly"></div>
-    <div class="icon-fly"></div>
-    <div class="icon-fly"></div>
-    <div class="icon-fly"></div>
+    <div class="icon-fly"><div class="logo icon-content"></div></div>
+    <div class="icon-fly"><div class="logo icon-content"></div></div>
+    <div class="icon-fly"><div class="logo icon-content"></div></div>
+    <div class="icon-fly"><div class="logo icon-content"></div></div>
 </div>
 
 <header>
-    <img src="icon.jpg" alt="BITARDIA Token Logo">
+    <div class="icon-placeholder"><div class="logo"></div></div>
 </header>
 
 <main>
     <section class="hero">
         <h1>$BITARDIA – The Token of a Cult Game</h1>
         <p>
-            $BITARDIA is a token inspired by the renowned game rooted in the culture of Russian imageboards. 
+            $BITARDIA is a token inspired by the renowned game rooted in the culture of  imageboards. 
             Launched on Blum Memepad and powered by the TON network, $BITARDIA is your gateway to a unique gaming experience.
         </p>
         <a href="https://t.me/blum/app?startapp=memepadjetton_BITARDIA_Jkn5x-ref_5PLVUF5WC9" class="cta-button">Get $BITARDIA</a>
@@ -285,6 +308,19 @@
 <footer>
     © 2024 BITARDIA. All rights reserved.
 </footer>
+
+<script>
+    var icons = document.querySelectorAll('.logo');
+    icons.forEach(iconContent => {
+        iconContent.addEventListener('click', (e) => {
+            e.stopPropagation();
+            iconContent.classList.add('flip');
+            iconContent.addEventListener('animationend', () => {
+                iconContent.classList.remove('flip');
+            }, { once: true });
+        });
+    });
+</script>
 
 </body>
 </html>
